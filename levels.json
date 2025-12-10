@@ -6,17 +6,17 @@
     "starterCode": "// Druk het woord Hallo af met console.log\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('hallo')); }catch(e){return false} })",
     "points": 10,
-    "hint": "Type: console.log('Hallo')",
+    "hint": "Gebruik de console.log functie om tekst af te drukken",
     "solution": "console.log('Hallo')"
   },
   {
     "id": 2,
     "title": "Je Naam",
-    "description": "Maak een variabele genaamd `name` met je naam en druk deze af",
+    "description": "Maak een variabele genaamd `name` met je naam en laat deze met console.log zien op het scherm",
     "starterCode": "// maak een variabele en druk deze af\n",
     "testCode": "(async function(){ try{ if(typeof name === 'undefined') return false; const n = String(name); return consoleMessages.some(m => m.includes(n)); }catch(e){ return false } })",
     "points": 15,
-    "hint": "Maak een variabele `name` met je naam, bijvoorbeeld: const name = 'JeNaam'; console.log(name)",
+    "hint": "Maak eerst een variabele met je naam, druk dit daarna af",
     "solution": "const name = 'JeNaam';\nconsole.log(name)"
   },
   {
@@ -26,7 +26,7 @@
     "starterCode": "// maak twee variabelen en console.log hun som\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => { const n = parseFloat(String(m).trim()); return !isNaN(n) && n > 0; }); }catch(e){return false} })",
     "points": 20,
-    "hint": "const a = 3; const b = 4; console.log(a + b) — je kunt var, let of const gebruiken",
+    "hint": "Maak twee variabelen en voeg ze samen met de + operator",
     "solution": "const a = 3;\nconst b = 4;\nconsole.log(a + b)"
   },
   {
@@ -36,7 +36,7 @@
     "starterCode": "// maak twee stringvariabelen en voeg ze samen\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => { const parts = String(m).trim().split(/\\s+/); return parts.length >= 2; }); }catch(e){return false} })",
     "points": 20,
-    "hint": "const first = 'Alex'; const last = 'Doe'; console.log(first + ' ' + last) — je kunt var, let of const gebruiken",
+    "hint": "Maak twee stringvariabelen en voeg ze samen met spatie ertussen",
     "solution": "const first = 'Alex';\nconst last = 'Doe';\nconsole.log(first + ' ' + last)"
   },
   {
@@ -46,7 +46,7 @@
     "starterCode": "let count = 1;\n// verhoog count en druk het af\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => { const n = parseFloat(String(m).trim()); return !isNaN(n) && n===2; }); }catch(e){return false} })",
     "points": 25,
-    "hint": "count = count + 1; console.log(count) — declareer met var, let of const zoals je wilt",
+    "hint": "Verhoog count met 1 en druk de nieuwe waarde af",
     "solution": "let count = 1;\ncount = count + 1;\nconsole.log(count)"
   },
   {
@@ -56,7 +56,7 @@
     "starterCode": "const age = 20;\n// schrijf een if/else die 'volwassene' of 'minderjarig' afdrukt\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('volwassene')); }catch(e){return false} })",
     "points": 30,
-    "hint": "if (age >= 18) { console.log('volwassene') } else { console.log('minderjarig') } — hoofdletters maken niet uit",
+    "hint": "Gebruik een if statement om te controleren of age 18 of meer is",
     "solution": "const age = 20;\nif (age >= 18) {\n  console.log('volwassene')\n} else {\n  console.log('minderjarig')\n}"
   },
   {
@@ -66,7 +66,7 @@
     "starterCode": "const password = 'open';\n// controleer wachtwoord en druk dienovereenkomstig af\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('welkom')); }catch(e){return false} })",
     "points": 30,
-    "hint": "if (password === 'open') { console.log('welkom') } else { console.log('geweigerd') } — gelijkheidscontrole is strikt, je kunt var/let/const gebruiken",
+    "hint": "Controleer of het wachtwoord gelijk is aan 'open' en druk het bijbehorende bericht af",
     "solution": "const password = 'open';\nif (password === 'open') {\n  console.log('welkom')\n} else {\n  console.log('geweigerd')\n}"
   },
   {
@@ -76,7 +76,7 @@
     "starterCode": "const score = 55;\n// druk 'geslaagd' of 'gezakt' af op basis van score\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('geslaagd')); }catch(e){return false} })",
     "points": 35,
-    "hint": "if (score >= 50) console.log('geslaagd'); else console.log('gezakt') — niet afhankelijk van hoofdletters",
+    "hint": "Controleer of de score 50 of hoger is en druk het passende resultaat af",
     "solution": "const score = 55;\nif (score >= 50) {\n  console.log('geslaagd')\n} else {\n  console.log('gezakt')\n}"
   },
   {
@@ -86,7 +86,7 @@
     "starterCode": "// gebruik een lus om een som te berekenen en druk deze af\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => { const n = parseFloat(String(m).trim()); return !isNaN(n) && n > 0; }); }catch(e){return false} })",
     "points": 40,
-    "hint": "let s=0; for (let i=1;i<=5;i++) s+=i; console.log(s)",
+    "hint": "Maak een variabele voor de som en gebruik een lus om getallen op te tellen",
     "solution": "let s = 0;\nfor (let i = 1; i <= 5; i++) {\n  s += i\n}\nconsole.log(s)"
   },
   {
@@ -96,7 +96,7 @@
     "starterCode": "const items = ['a','b','c'];\n// druk een kommagescheiden string van items af\n",
     "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('a,b,c')); }catch(e){return false} })",
     "points": 50,
-    "hint": "console.log(items.join(',')) of gebruik een lus om een string op te bouwen — hoofdletters maken niet uit",
+    "hint": "Arrays hebben een methode om elementen met scheidingstekens samen te voegen",
     "solution": "const items = ['a','b','c'];\nconsole.log(items.join(','))"
   }
 ]

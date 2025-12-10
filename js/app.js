@@ -7,7 +7,8 @@ const state = {
   badges: [],
   attempts: {},
   completed: [],
-  editor: null
+  editor: null,
+  savedCode: {}
 }
 
 const $ = sel => document.querySelector(sel)
@@ -20,11 +21,17 @@ async function init(){
     console.error('Failed to load levels.json', err)
     state.levels = [{ id: 0, title: 'Snelle Test', description: 'Snelle testmodus — gebruik console.log om uitvoer te zien', starterCode: '// type JS hier en druk op Uitvoeren', testCode: 'null', points: 0 }]
   }
+
   loadState()
   renderLevels()
   renderProgress()
   bindControls()
   initializeEditor()
+  // Auto-select first incomplete level
+  const firstIncomplete = state.levels.find(l => !state.completed.includes(l.id))
+  if(firstIncomplete){
+    selectLevel(firstIncomplete.id)
+  }
 }
 
 document.addEventListener('click', (e)=>{
@@ -62,12 +69,20 @@ function selectLevel(id){
   if(li){
     li.textContent = level.description || ''
   }
+
   const ex = $('#level-example')
   if(ex) ex.textContent = level.starterCode || ''
-  if(state.editor) state.editor.setValue(level.starterCode || '')
-  else $('#code').value = level.starterCode || ''
+  // Restore saved code if level was completed, otherwise use starter code
+  const codeToUse = state.savedCode[id] || level.starterCode || ''
+  if(state.editor) state.editor.setValue(codeToUse)
+  else $('#code').value = codeToUse
   document.querySelectorAll('#levels-list li').forEach(li=>li.classList.toggle('active',li.dataset.id==id))
-  $('#result').textContent = ''
+  const resultEl = $('#result')
+  resultEl.textContent = ''
+  resultEl.innerHTML = ''
+  // Clear the iframe content
+  const iframe = $('#sandbox')
+  if(iframe) iframe.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:system-ui;color:#999;padding:12px;background:#fff}</style></head><body></body></html>'
   $('#level-badge').textContent = `Niveau: ${level.id}`
   updateAttemptsDisplay()
   $('#hint-area').textContent = ''
@@ -83,11 +98,6 @@ function bindControls(){
     if(state.current){
       if(state.editor) state.editor.setValue(state.current.starterCode || '')
       else $('#code').value = state.current.starterCode || ''
-    }
-  })
-  $('#show-solution').addEventListener('click', ()=>{
-    if(state.current && state.current.solution){
-      $('#hint-area').textContent = state.current.solution
     }
   })
   window.addEventListener('message', onMessageFromIframe)
@@ -207,6 +217,12 @@ function onMessageFromIframe(e){
     awardPoints(state.current.points)
     unlockBadge(`Voltooid ${state.current.title}`)
     if(state.current && state.current.id) state.attempts[state.current.id] = 0
+    // Save the successful code for this level
+    if(state.current && state.current.id){
+      const code = state.editor ? state.editor.getValue() : $('#code').value
+      state.savedCode[state.current.id] = code
+    }
+
     if(state.current && state.current.id && !state.completed.includes(state.current.id)){
       state.completed.push(state.current.id)
       const li = document.querySelector(`#levels-list li[data-id='${state.current.id}']`)
@@ -219,6 +235,7 @@ function onMessageFromIframe(e){
         }
       }
     }
+
     updateAttemptsDisplay()
     renderLevels()
     renderProgress()
@@ -228,13 +245,14 @@ function onMessageFromIframe(e){
       // Geen test — toon alleen console-uitvoer die al hierboven wordt weergegeven
     }else{
       // Test mislukt
-      resultEl.textContent = '❌ Tests mislukt — probeer opnieuw.'
+      resultEl.textContent = '❌ Fout, probeer opnieuw.'
       if(data.messages && data.messages.length){
         const pre = document.createElement('pre')
         pre.textContent = data.messages.join('\n')
         pre.style.whiteSpace = 'pre-wrap'
         resultEl.appendChild(pre)
       }
+
       if(state.current && state.current.id){
         const id = state.current.id
         state.attempts[id] = (state.attempts[id]||0) + 1
@@ -245,12 +263,10 @@ function onMessageFromIframe(e){
           const hc = $('#hint-container')
           if(hc) hc.hidden = false
         }
-        if(attempts >= 3 && state.current.solution){
-          $('#show-solution').style.display = 'inline-block'
-        }
       }
     }
   }
+
   saveState()
 }
 
@@ -353,6 +369,7 @@ function startConfetti(canvas, duration=3000){
   for(let i=0;i<120;i++){
     pieces.push({x:Math.random()*window.innerWidth, y:Math.random()*-window.innerHeight, vx:(Math.random()-0.5)*6, vy:Math.random()*6+2, size:Math.random()*8+6, color:colors[Math.floor(Math.random()*colors.length)], rot:Math.random()*360, vr:(Math.random()-0.5)*10})
   }
+
   let start = performance.now()
   function draw(t){
     const dt = t - start
@@ -366,9 +383,11 @@ function startConfetti(canvas, duration=3000){
       ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
       ctx.restore();
     }
+
     if(t - start < duration) requestAnimationFrame(draw)
     else { ctx.clearRect(0,0,canvas.width,canvas.height); window.removeEventListener('resize', resize); if(canvas) canvas.style.display='none' }
   }
+
   requestAnimationFrame(draw)
 }
 
@@ -385,9 +404,9 @@ function renderProgress(){
   }
 }
 
-function saveState(){ localStorage.setItem('codequest', JSON.stringify({score:state.score,badges:state.badges,attempts:state.attempts,completed:state.completed})) }
+function saveState(){ localStorage.setItem('codequest', JSON.stringify({score:state.score,badges:state.badges,attempts:state.attempts,completed:state.completed,savedCode:state.savedCode})) }
 
-function loadState(){ const s = localStorage.getItem('codequest'); if(!s) return; try{ const obj=JSON.parse(s); state.score = obj.score||0; state.badges = obj.badges||[]; state.attempts = obj.attempts||{}; state.completed = obj.completed||[]; $('#score-badge').textContent=`Score: ${state.score}`; renderBadges() }catch(e){} }
+function loadState(){ const s = localStorage.getItem('codequest'); if(!s) return; try{ const obj=JSON.parse(s); state.score = obj.score||0; state.badges = obj.badges||[]; state.attempts = obj.attempts||{}; state.completed = obj.completed||[]; state.savedCode = obj.savedCode||{}; $('#score-badge').textContent=`Score: ${state.score}`; renderBadges() }catch(e){} }
 
 if(typeof window !== 'undefined'){
   try{
