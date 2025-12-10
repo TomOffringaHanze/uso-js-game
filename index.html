@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Vanilla JS Coding Game</title>
+    <title>CodeQuest - Vanilla JS Codering Spel</title>
     <link rel="stylesheet" href="css/styles.css" />
     <!-- CodeMirror 5 (simple, widely compatible) -->
     <link
@@ -17,22 +17,22 @@
   </head>
   <body>
     <header>
-      <h1>CodeQuest — Vanilla JS Levels</h1>
+      <h1>CodeQuest — Vanilla JS Niveaus</h1>
       <div id="stats">
-        <span id="level-badge">Level: —</span>
+        <span id="level-badge">Niveau: —</span>
         <span id="score-badge">Score: 0</span>
-        <span id="time-badge">Time: 0s</span>
+        <span id="time-badge">Tijd: 0s</span>
       </div>
       <div id="progress-wrap">
         <div id="progress-bar"><div id="progress-fill"></div></div>
         <div id="progress-text">0 / 0</div>
       </div>
-      <button id="reset-game" title="Reset all progress">Reset Progress</button>
+      <button id="reset-game" title="Alle voortgang opnieuw instellen">Voortgang Opnieuw Instellen</button>
     </header>
 
     <main>
       <aside id="levels">
-        <h2>Levels</h2>
+        <h2>Niveaus</h2>
         <ul id="levels-list"></ul>
         <div id="badges">
           <h3>Badges</h3>
@@ -42,14 +42,10 @@
 
       <section id="play-area">
         <div id="level-info">
-          <h2 id="level-title">Select a level</h2>
-          <p id="level-desc"></p>
+          <h2 id="level-title">Selecteer een niveau</h2>
           <div id="level-meta" class="card">
-            <strong>What to do</strong>
-            <p id="level-instructions" class="muted">
-              Follow the task description above. Use console.log to show answers
-              when required.
-            </p>
+            <strong>Wat te doen</strong>
+            <p id="level-instructions" class="muted"></p>
             <div
               id="level-example"
               style="
@@ -63,79 +59,74 @@
         </div>
 
         <div id="editor-area">
-          <label for="code">Write vanilla JavaScript (no frameworks)</label>
+          <label for="code">Schrijf vanilla JavaScript (geen frameworks)</label>
           <textarea id="code" spellcheck="false"></textarea>
           <div class="editor-footer">
-            <div id="attempts" class="muted">Attempts: 0</div>
+            <div id="attempts" class="muted">Pogingen: 0</div>
             <div id="hint-container" hidden>
               <div id="hint-area" class="muted"></div>
               <button
                 id="show-solution"
                 style="display: none; background: #ffdb99; color: #000"
               >
-                Show solution
+                Toon oplossing
               </button>
             </div>
           </div>
           <div class="controls">
-            <button id="run">Run</button>
-            <button id="reset">Reset</button>
+            <button id="run">Uitvoeren</button>
+            <button id="reset">Opnieuw Instellen</button>
             <span id="message" class="muted"></span>
           </div>
         </div>
 
         <div id="output-area">
-          <h3>Output</h3>
+          <h3>Uitvoer</h3>
           <iframe id="sandbox" sandbox="allow-scripts"></iframe>
           <div id="result"></div>
         </div>
       </section>
       <aside id="guides" class="card">
-        <h3>General Instructions</h3>
+        <h3>Algemene Instructies</h3>
         <ul>
           <li>
-            Write vanilla JavaScript only — no frameworks or external imports.
+            Schrijf alleen vanilla JavaScript — geen frameworks of externe imports.
           </li>
           <li>
-            Use <code>console.log()</code> to output results for most levels.
+            Gebruik <code>console.log()</code> om resultaten weer te geven voor de meeste niveaus.
           </li>
           <li>
-            You may declare variables with <code>var</code>, <code>let</code>,
-            or <code>const</code>.
+            U kunt variabelen declareren met <code>var</code>, <code>let</code>,
+            of <code>const</code>.
           </li>
           <li>
-            Hints appear after 2 failed attempts; solutions can be shown after 3
-            attempts.
+            Hints verschijnen na 2 mislukte pogingen; oplossingen kunnen na 3 pogingen worden weergegeven.
           </li>
           <li>
-            Try to read the level description carefully — smaller steps help
-            learning.
+            Lees de niveaubeschrijving zorgvuldig — kleinere stappen helpen bij het leren.
           </li>
         </ul>
         <hr style="margin: 10px 0; opacity: 0.06" />
         <h4>Tips</h4>
         <ol style="margin: 6px 0 0 18px; color: var(--muted)">
           <li>
-            Start small: print values with <code>console.log</code> to verify
-            bits of code.
+            Begin klein: druk waarden af met <code>console.log</code> om codefragmenten te verifiëren.
           </li>
           <li>
-            Use the hint if stuck — it nudges you, not the full solution (until
-            3 attempts).
+            Gebruik de hint als u vastloopt — het geeft je een duw, niet de volledige oplossing (tot 3 pogingen).
           </li>
         </ol>
       </aside>
     </main>
 
-    <!-- Celebration modal + confetti canvas -->
+    <!-- Feestmodal + confetti canvas -->
     <div id="celebration" style="display: none">
       <div class="celebration-modal">
-        <h2>🎉 All levels complete!</h2>
+        <h2>🎉 Alle niveaus voltooid!</h2>
         <p>
-          Great job — you've finished all levels. Keep practicing to get even
-          better!
+          Goed gedaan — je hebt alle niveaus voltooid. Oefen verder om nog beter te worden!
         </p>
-        <button id="celebration-close">Close</button>
+        <button id="celebration-close">Sluiten</button>
       </div>
     </div>
     <canvas
@@ -152,7 +143,7 @@
       "
     ></canvas>
 
-    <!-- CodeMirror scripts (load before app) -->
+    <!-- CodeMirror scripts (vooraf laden) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
     <!-- App scripts -->

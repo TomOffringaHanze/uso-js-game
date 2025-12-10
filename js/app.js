@@ -18,7 +18,7 @@ async function init(){
     state.levels = await res.json()
   }catch(err){
     console.error('Failed to load levels.json', err)
-    state.levels = [{ id: 0, title: 'Quick Test', description: 'Quick test mode — use console.log to see output', starterCode: '// type JS here and press Run', testCode: 'null', points: 0 }]
+    state.levels = [{ id: 0, title: 'Snelle Test', description: 'Snelle testmodus — gebruik console.log om uitvoer te zien', starterCode: '// type JS hier en druk op Uitvoeren', testCode: 'null', points: 0 }]
   }
   loadState()
   renderLevels()
@@ -57,16 +57,18 @@ function selectLevel(id){
   const level = state.levels.find(l=>l.id==id)
   state.current = level
   $('#level-title').textContent = `${level.id}. ${level.title}`
-  $('#level-desc').textContent = level.description
+  // Populate instructions with level description
   const li = $('#level-instructions')
+  if(li){
+    li.textContent = level.description || ''
+  }
   const ex = $('#level-example')
-  if(li) li.textContent = level.description
   if(ex) ex.textContent = level.starterCode || ''
   if(state.editor) state.editor.setValue(level.starterCode || '')
   else $('#code').value = level.starterCode || ''
   document.querySelectorAll('#levels-list li').forEach(li=>li.classList.toggle('active',li.dataset.id==id))
   $('#result').textContent = ''
-  $('#level-badge').textContent = `Level: ${level.id}`
+  $('#level-badge').textContent = `Niveau: ${level.id}`
   updateAttemptsDisplay()
   $('#hint-area').textContent = ''
   $('#show-solution').style.display = 'none'
@@ -112,12 +114,12 @@ function validateVanilla(code){
 }
 
 function runCode(){
-  if(!state.current){ $('#message').textContent='Pick a level first'; return }
+  if(!state.current){ $('#message').textContent='Selecteer eerst een niveau'; return }
   $('#message').textContent=''
   const code = state.editor ? state.editor.getValue() : $('#code').value
   const bad = validateVanilla(code)
   if(bad){ $('#message').textContent = bad; return }
-  $('#result').textContent = 'Running...'
+  $('#result').textContent = 'Bezig met uitvoeren...'
   const harness = makeIframeSrcdoc(code, state.current.testCode)
   const iframe = $('#sandbox')
   if(iframe) iframe.srcdoc = harness
@@ -201,9 +203,9 @@ function onMessageFromIframe(e){
   }
   
   if(data.ok){
-    resultEl.textContent = '✅ Level solved!'
+    resultEl.textContent = '✅ Niveau opgelost!'
     awardPoints(state.current.points)
-    unlockBadge(`Completed ${state.current.title}`)
+    unlockBadge(`Voltooid ${state.current.title}`)
     if(state.current && state.current.id) state.attempts[state.current.id] = 0
     if(state.current && state.current.id && !state.completed.includes(state.current.id)){
       state.completed.push(state.current.id)
@@ -223,10 +225,10 @@ function onMessageFromIframe(e){
     nextLevel()
   }else{
     if(!data.hasTest){
-      // No test — just show console output already displayed above
+      // Geen test — toon alleen console-uitvoer die al hierboven wordt weergegeven
     }else{
-      // Test failed
-      resultEl.textContent = '❌ Tests failed — try again.'
+      // Test mislukt
+      resultEl.textContent = '❌ Tests mislukt — probeer opnieuw.'
       if(data.messages && data.messages.length){
         const pre = document.createElement('pre')
         pre.textContent = data.messages.join('\n')
@@ -255,7 +257,7 @@ function onMessageFromIframe(e){
 function updateAttemptsDisplay(){
   const id = state.current && state.current.id
   const n = id ? (state.attempts[id]||0) : 0
-  $('#attempts').textContent = `Attempts: ${n}`
+  $('#attempts').textContent = `Pogingen: ${n}`
 }
 
 function awardPoints(n){ state.score += n; $('#score-badge').textContent = `Score: ${state.score}` }
@@ -266,7 +268,7 @@ function nextLevel(){
   if(next){
     setTimeout(()=>selectLevel(next.id),800)
   }else{
-    $('#result').textContent += ' 🎉 You finished all levels!'
+    $('#result').textContent += ' 🎉 Je hebt alle niveaus afgerond!'
   }
 }
 
@@ -275,7 +277,7 @@ function startTimer(){ state.startTime = Date.now(); updateTime() }
 function updateTime(){
   if(!state.startTime) return
   const s = Math.floor((Date.now()-state.startTime)/1000)
-  $('#time-badge').textContent = `Time: ${s}s`
+  $('#time-badge').textContent = `Tijd: ${s}s`
   requestAnimationFrame(updateTime)
 }
 
@@ -285,16 +287,16 @@ function renderBadges(){
   const list = $('#badges-list');
   list.innerHTML = '';
   const levelMap = {
-    'Say Hello': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4a2 2 0 00-2 2v14l4-2h14a2 2 0 002-2V4a2 2 0 00-2-2z" fill="#fff"/></svg>', theme: 'bronze' },
-    'Your Name': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3" fill="#fff"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="#fff"/></svg>', theme: 'bronze' },
-    'Add Numbers': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 11h10v2H7zM12 6h2v4h-2zM4 6h2v2H4zM18 16h2v2h-2z" fill="#fff"/></svg>', theme: 'bronze' },
-    'Full Name': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" fill="#fff"/></svg>', theme: 'silver' },
-    'Change a Variable': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v6l4-2 4 2V2" fill="#fff"/><rect x="4" y="10" width="16" height="12" rx="2" fill="#fff"/></svg>', theme: 'silver' },
-    'If Statement Basic': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3a3 3 0 100 6 3 3 0 000-6zM18 3a3 3 0 100 6 3 3 0 000-6zM12 12v-3l-4 2v5" fill="#fff"/></svg>', theme: 'silver' },
-    'Equality Check': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="9" rx="2" fill="#fff"/><path d="M8 11V8a4 4 0 018 0v3" fill="#fff"/></svg>', theme: 'gold' },
-    'Logical Condition': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>', theme: 'gold' },
-    'Sum with Loop': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 11-3-6.7L21 5v7z" fill="#fff"/></svg>', theme: 'gold' },
-    'Loop over Array': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="6" height="12" rx="1" fill="#fff"/><rect x="9" y="6" width="6" height="12" rx="1" fill="#fff"/><rect x="15" y="6" width="6" height="12" rx="1" fill="#fff"/></svg>', theme: 'gold' }
+    'Zeg Hallo': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4a2 2 0 00-2 2v14l4-2h14a2 2 0 002-2V4a2 2 0 00-2-2z" fill="#fff"/></svg>', theme: 'bronze' },
+    'Je Naam': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3" fill="#fff"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="#fff"/></svg>', theme: 'bronze' },
+    'Getallen Optellen': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 11h10v2H7zM12 6h2v4h-2zM4 6h2v2H4zM18 16h2v2h-2z" fill="#fff"/></svg>', theme: 'bronze' },
+    'Volledige Naam': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" fill="#fff"/></svg>', theme: 'silver' },
+    'Een Variabele Veranderen': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v6l4-2 4 2V2" fill="#fff"/><rect x="4" y="10" width="16" height="12" rx="2" fill="#fff"/></svg>', theme: 'silver' },
+    'If Statement Basis': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3a3 3 0 100 6 3 3 0 000-6zM18 3a3 3 0 100 6 3 3 0 000-6zM12 12v-3l-4 2v5" fill="#fff"/></svg>', theme: 'silver' },
+    'Gelijkheidscontrole': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="9" rx="2" fill="#fff"/><path d="M8 11V8a4 4 0 018 0v3" fill="#fff"/></svg>', theme: 'gold' },
+    'Logische Voorwaarde': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>', theme: 'gold' },
+    'Som met Lus': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 11-3-6.7L21 5v7z" fill="#fff"/></svg>', theme: 'gold' },
+    'Lus Over Array': { icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="6" height="12" rx="1" fill="#fff"/><rect x="9" y="6" width="6" height="12" rx="1" fill="#fff"/><rect x="15" y="6" width="6" height="12" rx="1" fill="#fff"/></svg>', theme: 'gold' }
   };
 
   state.badges.forEach(b=>{
@@ -307,7 +309,7 @@ function renderBadges(){
 
     let svg = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#fff"/></svg>'
     let theme = ''
-    const match = /^Completed\s+(.+)$/i.exec(b)
+    const match = /^Voltooid\s+(.+)$/i.exec(b)
     if(match){
       const title = match[1].trim()
       const entry = levelMap[title]

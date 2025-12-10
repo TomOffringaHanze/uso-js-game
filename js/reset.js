@@ -1,6 +1,6 @@
-// Reset/clear game helper — separate file to avoid touching main app logic
+// Reset/clear game helper — apart bestand om te voorkomen dat we de hoofdapp logic aanraken
 function clearGame(){
-  if(!confirm('Clear all progress? This will reset score, badges and completed levels.')) return
+  if(!confirm('Alle voortgang wissen? Hiermee worden score, badges en voltooide niveaus opnieuw ingesteld.')) return
   try{ localStorage.removeItem('codequest') }catch(e){}
   // reset in-memory state if available
   try{
@@ -24,10 +24,10 @@ function clearGame(){
     }else if(window.state && state.current){
       const ta = document.getElementById('code'); if(ta) ta.value = state.current.starterCode || ''
     }
-    alert('Progress cleared.')
+    alert('Voortgang gewist.')
   }catch(e){
     console.error('clearGame error', e)
-    alert('Error while clearing progress. Check console.')
+    alert('Fout bij het wissen van voortgang. Controleer console.')
   }
 }
 
