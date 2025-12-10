@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "title": "Say Hello",
+    "description": "Use console.log to print \"Hello\"",
+    "starterCode": "// Print the word Hello using console.log\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('hello')); }catch(e){return false} })",
+    "points": 10,
+    "hint": "Type: console.log('Hello')",
+    "solution": "console.log('Hello')"
+  },
+  {
+    "id": 2,
+    "title": "Your Name",
+    "description": "Create a variable called `name` with your name and log it",
+    "starterCode": "// create a variable and print it\n",
+    "testCode": "(async function(){ try{ if(typeof name === 'undefined') return false; const n = String(name); return consoleMessages.some(m => m.includes(n)); }catch(e){ return false } })",
+    "points": 15,
+    "hint": "Create a variable `name` with your name, for example: const name = 'YourName'; console.log(name)",
+    "solution": "const name = 'YourName';\nconsole.log(name)"
+  },
+  {
+    "id": 3,
+    "title": "Add Numbers",
+    "description": "Create two variables with numbers and log their sum (e.g. 3 + 4 -> 7)",
+    "starterCode": "// create two variables and console.log their sum\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => { const n = parseFloat(String(m).trim()); return !isNaN(n) && n > 0; }); }catch(e){return false} })",
+    "points": 20,
+    "hint": "const a = 3; const b = 4; console.log(a + b) — you can use var, let or const",
+    "solution": "const a = 3;\nconst b = 4;\nconsole.log(a + b)"
+  },
+  {
+    "id": 4,
+    "title": "Full Name",
+    "description": "Create `first` and `last` variables and log the full name (e.g. Alex Doe)",
+    "starterCode": "// create two string variables and join them\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => { const parts = String(m).trim().split(/\\s+/); return parts.length >= 2; }); }catch(e){return false} })",
+    "points": 20,
+    "hint": "const first = 'Alex'; const last = 'Doe'; console.log(first + ' ' + last) — you can use var, let or const",
+    "solution": "const first = 'Alex';\nconst last = 'Doe';\nconsole.log(first + ' ' + last)"
+  },
+  {
+    "id": 5,
+    "title": "Change a Variable",
+    "description": "Start with `let count = 1` then increase it and log the new value (should be 2)",
+    "starterCode": "let count = 1;\n// increase count and log it\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => { const n = parseFloat(String(m).trim()); return !isNaN(n) && n===2; }); }catch(e){return false} })",
+    "points": 25,
+    "hint": "count = count + 1; console.log(count) — declare with var, let or const as you prefer",
+    "solution": "let count = 1;\ncount = count + 1;\nconsole.log(count)"
+  },
+  {
+    "id": 6,
+    "title": "If Statement Basic",
+    "description": "Given `const age = 20`, write an if statement that logs 'adult' when age >= 18",
+    "starterCode": "const age = 20;\n// write an if/else that logs 'adult' or 'minor'\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('adult')); }catch(e){return false} })",
+    "points": 30,
+    "hint": "if (age >= 18) { console.log('adult') } else { console.log('minor') } — case does not matter",
+    "solution": "const age = 20;\nif (age >= 18) {\n  console.log('adult')\n} else {\n  console.log('minor')\n}"
+  },
+  {
+    "id": 7,
+    "title": "Equality Check",
+    "description": "Given `const password = 'open'`, log 'welcome' when it matches",
+    "starterCode": "const password = 'open';\n// check password and log accordingly\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('welcome')); }catch(e){return false} })",
+    "points": 30,
+    "hint": "if (password === 'open') { console.log('welcome') } else { console.log('denied') } — equality check is strict, you can use var/let/const",
+    "solution": "const password = 'open';\nif (password === 'open') {\n  console.log('welcome')\n} else {\n  console.log('denied')\n}"
+  },
+  {
+    "id": 8,
+    "title": "Logical Condition",
+    "description": "Given `const score = 55`, log 'pass' when score &gt;= 50",
+    "starterCode": "const score = 55;\n// log 'pass' or 'fail' based on score\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('pass')); }catch(e){return false} })",
+    "points": 35,
+    "hint": "if (score >= 50) console.log('pass'); else console.log('fail') — case-insensitive",
+    "solution": "const score = 55;\nif (score >= 50) {\n  console.log('pass')\n} else {\n  console.log('fail')\n}"
+  },
+  {
+    "id": 9,
+    "title": "Sum with Loop",
+    "description": "Use a loop to sum numbers and log the total",
+    "starterCode": "// use a loop to compute a sum and log it\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => { const n = parseFloat(String(m).trim()); return !isNaN(n) && n > 0; }); }catch(e){return false} })",
+    "points": 40,
+    "hint": "let s=0; for (let i=1;i<=5;i++) s+=i; console.log(s)",
+    "solution": "let s = 0;\nfor (let i = 1; i <= 5; i++) {\n  s += i\n}\nconsole.log(s)"
+  },
+  {
+    "id": 10,
+    "title": "Loop over Array",
+    "description": "Given `const items = ['a','b','c']`, join them with commas and log the result 'a,b,c'",
+    "starterCode": "const items = ['a','b','c'];\n// log a comma-separated string of items\n",
+    "testCode": "(async function(){ try{ return consoleMessages.some(m => String(m).toLowerCase().includes('a,b,c')); }catch(e){return false} })",
+    "points": 50,
+    "hint": "console.log(items.join(',')) or use a loop to build a string — case does not matter",
+    "solution": "const items = ['a','b','c'];\nconsole.log(items.join(','))"
+  }
+]

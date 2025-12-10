@@ -1,0 +1,145 @@
+:root{
+  --bg:#0f1724;--panel:#0b1220;--muted:#9aa4b2;--accent:#2dd4bf;--danger:#fb7185;
+}
+
+*{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Arial,Helvetica}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,#081025 0%, #071228 100%);color:#e6eef6}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);gap:24px;flex-wrap:wrap}
+header h1{margin:0;flex:0 0 auto}
+#reset-game{background:linear-gradient(135deg,#ef4444 0%, #dc2626 100%);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(239,68,68,0.15);transition:all 200ms ease;margin-left:auto}
+#reset-game:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(239,68,68,0.25)}
+main{display:flex;height:calc(100vh - 72px)}
+#levels-list{list-style:none;padding:0;margin:8px 0}
+#levels-list li{padding:8px;margin-bottom:6px;background:rgba(255,255,255,0.02);cursor:pointer;border-radius:6px}
+#levels-list li.active{outline:2px solid var(--accent)}
+#play-area{flex:1;padding:18px;display:flex;flex-direction:column;gap:12px}
+
+/* Right guides column */
+aside#guides{width:300px;padding:18px;border-left:1px solid rgba(255,255,255,0.03)}
+
+#levels-list li{padding:8px;margin-bottom:6px;background:rgba(255,255,255,0.02);cursor:pointer;border-radius:6px}
+#levels-list li.active{outline:2px solid var(--accent)}
+#levels-list li{padding:8px;margin-bottom:6px;background:rgba(255,255,255,0.02);cursor:pointer;border-radius:6px}
+#levels-list li.active{outline:2px solid var(--accent)}
+#play-area{flex:1;padding:18px;display:flex;flex-direction:column;gap:12px}
+#editor-area{flex:0 0 42%;display:flex;flex-direction:column;gap:8px}
+#code{flex:1;width:100%;background:#071226;color:#e6eef6;border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:6px;font-family:Menlo,Monaco,monospace}
+.controls{display:flex;gap:8px;align-items:center;margin-top:8px}
+button{background:var(--accent);border:none;padding:8px 12px;border-radius:6px;color:#042023;cursor:pointer}
+#output-area{flex:1;display:flex;flex-direction:column;gap:12px}
+
+/* Card treatment for main sections for stronger contrast */
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+
+#level-info{display:flex;flex-direction:column;gap:8px}
+#level-title{margin:0}
+#level-desc{color:var(--muted);margin:0}
+
+/* Instructions card styling */
+#instructions{max-width:680px}
+#instructions h3{margin:0 0 6px}
+#instructions ul{margin:0;padding-left:18px;color:#d0f6ec}
+#instructions li{margin-bottom:6px}
+
+/* Make editor and output visually distinct */
+#editor-area .card, #output-area .card{background:linear-gradient(180deg,#041827,#051827);border:1px solid rgba(255,255,255,0.03)}
+#editor-area label{font-weight:600}
+
+/* Hide hint container by default; JS will toggle hidden attribute */
+#hint-container[hidden]{display:none}
+#hint-container{display:flex;flex-direction:column;gap:6px}
+
+#sandbox{flex:1;min-height:180px;width:100%;height:100%;display:block;border:1px solid rgba(255,255,255,0.03);background:#021123;border-radius:6px}
+#result{margin-top:8px;padding:8px;color:var(--muted);white-space:pre-wrap;max-height:220px;overflow:auto;background:rgba(0,0,0,0.03);border-radius:6px}
+.muted{color:var(--muted)}
+#badges-list{display:flex;flex-wrap:wrap;gap:6px}
+.badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px;font-size:13px}
+@media (max-width:1100px){aside#guides{display:none}}
+@media (max-width:900px){aside#levels{display:none}header{padding:12px}}
+
+/* UI polish: shiny badges, completed levels, improved hints */
+#badges-list{display:flex;flex-wrap:wrap;gap:8px}
+.badge{position:relative;display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;font-size:13px;background:linear-gradient(135deg,#1de9b6 0%, #34d399 40%, rgba(255,255,255,0.06) 100%);color:#022926;font-weight:600;box-shadow:0 6px 18px rgba(45,212,191,0.14), inset 0 -2px 6px rgba(255,255,255,0.06);overflow:hidden}
+.badge::after{content:'';position:absolute;left:-40%;top:0;bottom:0;width:40%;background:linear-gradient(120deg,rgba(255,255,255,0.25),rgba(255,255,255,0.05),rgba(255,255,255,0.25));transform:skewX(-20deg);opacity:0.6;animation:badge-shine 2.8s linear infinite}
+.badge .b-icon{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.22);display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+
+@keyframes badge-shine{from{left:-40%}to{left:140%}}
+
+/* Stronger hint/tip contrast overrides */
+#hint-area{background:linear-gradient(180deg,#e6f7f6,#def3f1) !important;border-left:4px solid var(--accent) !important;padding:12px 14px !important;border-radius:6px !important;color:#063a35 !important;font-size:14px;line-height:1.45}
+#hint-area code{background:#eef7f6 !important;padding:4px 6px;border-radius:4px;font-family:Menlo,Monaco,monospace;color:#03332e}
+#hint-area pre{background:#f3fbfa !important;padding:8px;border-radius:6px;color:#032e2a;overflow:auto}
+#hint-container .muted{color:#063a35 !important}
+
+/* Light theme overrides and spacing adjustments (appended) */
+:root{ --bg:#f6fbfc; --panel:#ffffff; --muted:#5b6b75; --accent:#0ea5a4; --danger:#ef4444 }
+html,body{background:linear-gradient(180deg,#f8fcfd 0%, #f2f9f9 100%);color:#082026}
+header{background:linear-gradient(90deg,rgba(2,10,12,0.02),transparent);color:#082026}
+/* enlarge left levels area and padding */
+aside#levels{width:320px;padding:28px 22px;border-right:1px solid rgba(2,10,12,0.06);background:var(--panel)}
+#play-area{padding:24px}
+/* card adjustments for light UI */
+.card{background:var(--panel);border:1px solid rgba(2,10,12,0.04);box-shadow:0 8px 20px rgba(16,24,26,0.04)}
+#instructions ul, #guides ul{color:var(--muted)}
+/* hint styling lighter */
+#hint-area{background:linear-gradient(180deg,#fbffff,#f6fdfd);color:#043233}
+#hint-area code{background:#f1f7f6}
+/* badge light adjustments */
+.badge{background:linear-gradient(135deg,#e6fffb 0%, #ccfaf2 40%);color:#063c36}
+.badge.gold{background:linear-gradient(135deg,#fff2b8 0%, #ffe69c 40%);color:#402d00}
+.badge.silver{background:linear-gradient(135deg,#f0f4f6 0%, #ffffff 40%);color:#052022}
+.badge.bronze{background:linear-gradient(135deg,#f8e6d8 0%, #f9efe6 40%);color:#4a2b10}
+
+/* right guides adjustments */
+aside#guides{background:var(--panel);border-left:1px solid rgba(2,10,12,0.04);padding:18px}
+
+/* subtle borders for level items */
+#levels-list li{border:1px solid rgba(2,10,12,0.03)}
+
+@media (max-width:1100px){aside#guides{display:none}}
+
+/* Completed level styling and checkmark */
+#levels-list li.completed{background:linear-gradient(90deg, rgba(45,212,191,0.06), rgba(45,212,191,0.03));border:1px solid rgba(45,212,191,0.12)}
+#levels-list li .check{float:right;margin-left:8px;color:var(--accent);font-weight:700}
+#levels-list li .level-meta{display:flex;align-items:center;justify-content:space-between}
+
+/* Better hint styling */
+#hint-area{margin-top:8px;background:linear-gradient(180deg, rgba(2,33,43,0.2), rgba(2,33,43,0.06));border-left:4px solid var(--accent);padding:10px 12px;border-radius:6px;color:#dff7f0}
+#hint-area code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:4px;font-family:Menlo,Monaco,monospace}
+#show-solution{background:#ffd580;border:none;padding:6px 10px;border-radius:6px;color:#000;cursor:pointer}
+
+/* Stats display in header */
+#stats{display:flex;gap:18px;align-items:center}
+#stats span{display:flex;align-items:center;font-size:14px;font-weight:500;color:#082026;background:rgba(14,165,164,0.08);padding:6px 12px;border-radius:6px;border:1px solid rgba(14,165,164,0.12)}
+#level-badge{background:linear-gradient(135deg,rgba(14,165,164,0.12),rgba(14,165,164,0.06));border-color:rgba(14,165,164,0.2)}
+#score-badge{background:linear-gradient(135deg,rgba(51,216,107,0.12),rgba(51,216,107,0.06));border-color:rgba(51,216,107,0.2)}
+#time-badge{background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(59,130,246,0.06));border-color:rgba(59,130,246,0.2)}
+
+/* Progress bar in header */
+#progress-wrap{display:flex;align-items:center;gap:8px}
+#progress-bar{width:180px;height:10px;background:rgba(2,10,12,0.06);border-radius:999px;overflow:hidden;border:1px solid rgba(2,10,12,0.08)}
+#progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#33d86b);transition:width 600ms cubic-bezier(.2,.9,.3,1)}
+#progress-text{font-size:12px;color:var(--muted);min-width:40px}
+
+/* Animated checkmark when a level completes */
+.check{display:inline-block;transform-origin:center;transition:transform 280ms ease, opacity 280ms}
+.just-completed .check{transform:scale(0);opacity:0}
+.just-completed .check.animate{transform:scale(1.3);opacity:1;transition:transform 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms}
+
+/* Badge icon tweaks */
+.badge .b-icon svg{width:16px;height:16px}
+
+/* Celebration modal */
+#celebration{position:fixed;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:10000}
+.celebration-modal{background:linear-gradient(180deg,#052029,#06343a);padding:28px;border-radius:12px;color:#e6fff8;max-width:420px;text-align:center;box-shadow:0 30px 80px rgba(2,12,22,0.6)}
+.celebration-modal h2{margin:0 0 8px;font-size:22px}
+.celebration-modal p{color:#cdeee6;margin:0 0 16px}
+.celebration-modal button{background:var(--accent);border:none;padding:8px 14px;border-radius:8px;color:#022926;font-weight:700;cursor:pointer}
+
+/* Confetti canvas will be displayed and animated by JS */
+#confetti-canvas{display:block}
+
+/* Color accents for badge themes */
+.badge.gold{background:linear-gradient(135deg,#ffd700 0%, #ffec99 40%);box-shadow:0 8px 20px rgba(255,215,0,0.12)}
+.badge.silver{background:linear-gradient(135deg,#c0c0c0 0%, #e6e6e6 40%);box-shadow:0 8px 20px rgba(192,192,192,0.08);color:#052022}
+.badge.bronze{background:linear-gradient(135deg,#cd7f32 0%, #e2b59b 40%);box-shadow:0 8px 20px rgba(205,127,50,0.08)}
